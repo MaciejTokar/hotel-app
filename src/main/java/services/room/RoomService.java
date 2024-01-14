@@ -49,6 +49,7 @@ public class RoomService {
         room.setNumber(roomRequest.getNumber());
         room.setPersonCount(roomRequest.getPersonCount());
         room.setPrice(roomRequest.getPrice());
+        room.setBathroom(roomRequest.isBathroom());
         room.setHotel(hotelDao.getHotel(roomRequest.getHotelId()));
     }
 }

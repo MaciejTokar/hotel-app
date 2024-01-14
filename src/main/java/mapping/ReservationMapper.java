@@ -5,7 +5,7 @@ import response.ReservationResponse;
 
 public class ReservationMapper {
 
-    public ReservationResponse from (Reservation reservation) {
+    public ReservationResponse fromReservationToReservationResponse(Reservation reservation) {
         return ReservationResponse.builder()
                 .id(reservation.getId())
                 .fromDate(reservation.getFromDate())

@@ -5,7 +5,7 @@ import response.EmployeeResponse;
 
 public class EmployeeMapper {
 
-    public EmployeeResponse bySurname(Employee employee) {
+    public EmployeeResponse fromEmployeeToEmployeeResponse(Employee employee) {
         return EmployeeResponse.builder()
                 .id(employee.getId())
                 .name(employee.getName())

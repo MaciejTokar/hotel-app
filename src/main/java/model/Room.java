@@ -20,6 +20,7 @@ public class Room {
     private String number;
     private String type;
     private Integer personCount;
+    private Boolean bathroom;
     @Column(name = "price_per_night")
     private BigDecimal price;
     @ManyToOne

@@ -5,18 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RoomResponse {
+public class ReviewResponse {
     private Long id;
-    private String number;
-    private String type;
-    private Integer personCount;
-    private BigDecimal price;
-    private Boolean bathroom;
+    private Integer outcome;
+    private String description;
+    private LocalDate date;
     private Long hotelId;
+    private Long clientId;
 }

@@ -4,7 +4,7 @@ import dao.ClientDao;
 import mapping.ClientMapper;
 import response.ClientResponse;
 
-import java.util.List;
+import java.util.*;
 
 public class ClientReportService {
 
@@ -20,14 +20,14 @@ public class ClientReportService {
     public List<ClientResponse> searchClientByName(String name) {
         return clientDao.findAll().stream()
                 .filter(n -> n.getName().equals(name))
-                .map(clientMapper::byName)
+                .map(clientMapper::fromClientToClientResponse)
                 .toList();
     }
 
-    public List<ClientResponse> searchClientBySurname(String surname) {
+    public List<ClientResponse> sortedList() {
         return clientDao.findAll().stream()
-                .filter(n -> n.getSurname().equals(surname))
-                .map(clientMapper::bySurname)
+                .map(clientMapper::fromClientToClientResponse)
+                .sorted(Comparator.comparing(ClientResponse::getName).thenComparing(ClientResponse::getSurname))
                 .toList();
     }
 }

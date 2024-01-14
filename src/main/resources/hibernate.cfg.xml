@@ -25,6 +25,7 @@
         <mapping class="model.Client"/>
         <mapping class="model.Reservation"/>
         <mapping class="model.Employee"/>
+        <mapping class="model.Review"/>
 
     </session-factory>
 </hibernate-configuration>

@@ -24,4 +24,8 @@ public class Client {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Reservation> reservations;
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<Review> reviews;
 }

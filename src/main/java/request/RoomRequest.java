@@ -16,5 +16,6 @@ public class RoomRequest {
     private String type;
     private Integer personCount;
     private BigDecimal price;
+    private boolean bathroom;
     private Long hotelId;
 }

@@ -27,4 +27,8 @@ public class Hotel {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Employee> employees;
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<Review> reviews;
 }

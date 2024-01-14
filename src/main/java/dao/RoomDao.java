@@ -6,6 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 public class RoomDao {
@@ -74,5 +77,42 @@ public class RoomDao {
             e.printStackTrace();
             return null;
         }
+    }
+    public List<Room> roomFilter(String name, LocalDate from, LocalDate to, Boolean bathroom, String type, Integer personCount, BigDecimal priceFrom, BigDecimal priceTo) {
+        Transaction transaction = null;
+        List<Room> list = Collections.emptyList();
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            String hql = "SELECT r FROM Room r " +
+                    "JOIN FETCH r.hotel h " +
+                    "LEFT JOIN FETCH r.reservations res " +
+                    "WHERE h.name = :name " +
+                    "AND r.bathroom = :bathroom " +
+                    "AND r.personCount = :personCount " +
+                    "AND r.type = :type " +
+                    "AND r.price BETWEEN :priceFrom AND :priceTo " +
+                    "AND (res IS NULL OR (res.fromDate > :to OR res.toDate < :from))";
+
+            list = session.createQuery(hql, Room.class)
+                    .setParameter("name", name)
+                    .setParameter("from", from)
+                    .setParameter("to", to)
+                    .setParameter("bathroom", bathroom)
+                    .setParameter("type", type)
+                    .setParameter("personCount", personCount)
+                    .setParameter("priceFrom", priceFrom)
+                    .setParameter("priceTo", priceTo)
+                    .getResultList();
+
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return list;
     }
 }
