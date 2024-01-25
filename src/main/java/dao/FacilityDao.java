@@ -1,41 +1,20 @@
 package dao;
 
 import config.HibernateUtil;
-import model.Reservation;
+import model.Facility;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
-public class ReservationDao {
+public class FacilityDao {
 
-    public void saveReservation(Reservation reservation) {
+    public void saveFacility(Facility facility) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(reservation);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-
-        if (reservation.getClient().getId() == null) {
-            throw new NullPointerException("Client id is null");
-        }
-        if (reservation.getRoom().getId() == null) {
-            throw new NullPointerException("Room id is null");
-        }
-    }
-
-    public void updateReservation(Reservation reservation) {
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.update(reservation);
+            session.save(facility);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -45,11 +24,11 @@ public class ReservationDao {
         }
     }
 
-    public void deleteReservation(Reservation reservation) {
+    public void updateFacility(Facility facility) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.delete(reservation);
+            session.update(facility);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -59,19 +38,33 @@ public class ReservationDao {
         }
     }
 
-    public Reservation getReservation(Long id) {
+    public void deleteFacility(Facility facility) {
+        Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Reservation.class, id);
+            transaction = session.beginTransaction();
+            session.delete(facility);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public Facility getFacility(Long id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Facility.class, id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<Reservation> findAll() {
+    public List<Facility> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Reservation> fromReservation = session.createQuery("from Reservation", Reservation.class);
-            return fromReservation.list();
+            Query<Facility> fromFacility = session.createQuery("from Facility", Facility.class);
+            return fromFacility.list();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -1,6 +1,7 @@
 package model;
 
 import lombok.*;
+import model.enums.CardType;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -20,7 +21,7 @@ public class Client {
     private String pesel;
     private String mail;
     private String phone;
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Reservation> reservations;
@@ -28,4 +29,10 @@ public class Client {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Review> reviews;
+    @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Event event;
+    @Enumerated(EnumType.STRING)
+    private CardType cardType;
 }

@@ -11,6 +11,7 @@ public class ClientMapper {
                 .name(client.getName())
                 .surname(client.getSurname())
                 .pesel(client.getPesel())
+                .cardType(client.getCardType())
                 .build();
     }
 }

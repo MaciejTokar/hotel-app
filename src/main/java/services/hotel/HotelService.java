@@ -1,7 +1,6 @@
 package services.hotel;
 
 import dao.HotelDao;
-import exeption.HotelException;
 import model.Hotel;
 import request.HotelRequest;
 
@@ -19,9 +18,8 @@ public class HotelService {
         hotelDao.saveHotel(hotel);
     }
 
-
-    public void updateHotel(Long hotelId, HotelRequest hotelRequest) {
-        Hotel hotel = hotelDao.getHotel(hotelId);
+    public void updateHotel(Long id, HotelRequest hotelRequest) {
+        Hotel hotel = hotelDao.getHotel(id);
         hotel.setName(hotelRequest.getName());
         hotel.setAddress(hotelRequest.getAddress());
         hotelDao.updateHotel(hotel);

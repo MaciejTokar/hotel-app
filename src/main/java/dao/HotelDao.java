@@ -24,7 +24,6 @@ public class HotelDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-//            Logger.getLogger(HotelDao.class.getName()).log(Level.SEVERE, null, e);
             throw new HotelException(HotelException.Code.DUPLICATE_EXCEPTION);
         }
 
@@ -57,27 +56,6 @@ public class HotelDao {
             e.printStackTrace();
         }
     }
-
-//    public void deleteHotel(Hotel hotel) {
-//        Transaction transaction = null;
-//        Session session = null;
-//        try {
-//            session = HibernateUtil.getSessionFactory().openSession();
-//            transaction = session.beginTransaction();
-//            session.delete(hotel);
-//            transaction.commit();
-//        } catch (Exception e) {
-//            if (transaction != null && transaction.isActive()) {
-//                transaction.rollback();
-//            }
-//            e.printStackTrace();
-//        } finally {
-//            if (session != null && session.isOpen()) {
-//                session.close();
-//            }
-//        }
-//    }
-
 
     public Hotel getHotel(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

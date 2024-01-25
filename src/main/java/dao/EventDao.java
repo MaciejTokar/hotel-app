@@ -1,20 +1,20 @@
 package dao;
 
 import config.HibernateUtil;
-import model.Reservation;
+import model.Event;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
-public class ReservationDao {
+public class EventDao {
 
-    public void saveReservation(Reservation reservation) {
+    public void saveEvent(Event event) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(reservation);
+            session.save(event);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -23,33 +23,16 @@ public class ReservationDao {
             e.printStackTrace();
         }
 
-        if (reservation.getClient().getId() == null) {
-            throw new NullPointerException("Client id is null");
-        }
-        if (reservation.getRoom().getId() == null) {
-            throw new NullPointerException("Room id is null");
+        if (event.getHotel().getId() == null) {
+            throw new NullPointerException();
         }
     }
 
-    public void updateReservation(Reservation reservation) {
+    public void updateEvent(Event event) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.update(reservation);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteReservation(Reservation reservation) {
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.delete(reservation);
+            session.update(event);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -59,19 +42,33 @@ public class ReservationDao {
         }
     }
 
-    public Reservation getReservation(Long id) {
+    public void deleteEvent(Event event) {
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.delete(event);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public Event getEvent(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Reservation.class, id);
+            return session.get(Event.class, id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<Reservation> findAll() {
+    public List<Event> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Reservation> fromReservation = session.createQuery("from Reservation", Reservation.class);
-            return fromReservation.list();
+            Query<Event> fromEvent = session.createQuery("from Event", Event.class);
+            return fromEvent.list();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -1,11 +1,10 @@
 package exeption;
 
-
-public class EmployeeException extends RuntimeException{
+public class EventException extends RuntimeException {
 
     public enum Code {
-        DUPLICATE_EXCEPTION("Duplicated value of employee"),
-        EMPLOYEE_ID_EXCEPTION("Null value of employee");
+        EVENT_ID_EXCEPTION("Invalid id value of event"),
+        EVENT_NULL_EXCEPTION("Value of event is null");
 
         private final String format;
 
@@ -18,7 +17,7 @@ public class EmployeeException extends RuntimeException{
         }
     }
 
-    public EmployeeException(Code code) {
+    public EventException(Code code) {
         super(code.getFormat());
     }
 }

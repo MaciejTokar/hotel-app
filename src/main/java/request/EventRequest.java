@@ -4,17 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import model.enums.EventType;
 
-import java.util.List;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReservationRequest {
-    private LocalDate fromDate;
-    private LocalDate toDate;
-    private List<Long> roomsId;
-    private Long clientId;
+public class EventRequest {
+    private LocalDate date;
+    private Integer personCount;
+    private Long hotelId;
+    private Set<EventType> eventType;
 }

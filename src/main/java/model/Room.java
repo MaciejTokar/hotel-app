@@ -4,6 +4,7 @@ package model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -30,4 +31,13 @@ public class Room {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Reservation> reservations;
+    @ManyToMany
+    @JoinTable(
+            name = "room_amenity",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "amenity_id")
+    )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Facility> facilities;
 }

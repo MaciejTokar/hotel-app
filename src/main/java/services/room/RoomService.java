@@ -1,5 +1,6 @@
 package services.room;
 
+import dao.ClientDao;
 import dao.HotelDao;
 import dao.RoomDao;
 import model.Room;
@@ -9,22 +10,13 @@ import request.RoomRequest;
 public class RoomService {
     private RoomDao roomDao;
     private HotelDao hotelDao;
+    private ClientDao clientDao;
 
-    public RoomService(RoomDao roomDao, HotelDao hotelDao) {
-
+    public RoomService(RoomDao roomDao, HotelDao hotelDao, ClientDao clientDao) {
         this.roomDao = roomDao;
         this.hotelDao = hotelDao;
+        this.clientDao = clientDao;
     }
-
-    public Room hotelIdValidator(Room room) {
-
-        if (room.getHotel().getId() == null) {
-            throw new NullPointerException();
-        }
-
-        return room;
-    }
-
     public void saveRoom(RoomRequest roomRequest) {
         Room room = new Room();
         upsertRoom(room, roomRequest);

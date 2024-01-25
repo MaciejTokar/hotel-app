@@ -19,8 +19,8 @@ public class ClientService {
         clientDao.saveClient(client);
     }
 
-    public void updateClient(ClientRequest clientRequest) {
-        Client client = new Client();
+    public void updateClient(Long id, ClientRequest clientRequest) {
+        Client client = clientDao.getClient(id);
         upsertRoom(client, clientRequest);
 
         clientDao.updateClient(client);
@@ -37,5 +37,6 @@ public class ClientService {
         client.setPesel(clientRequest.getPesel());
         client.setMail(clientRequest.getMail());
         client.setPhone(clientRequest.getPhone());
+        client.setCardType(clientRequest.getCardType());
     }
 }

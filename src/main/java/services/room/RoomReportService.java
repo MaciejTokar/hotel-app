@@ -3,7 +3,6 @@ package services.room;
 import dao.HotelDao;
 import dao.RoomDao;
 import mapping.RoomMapper;
-import model.Room;
 import response.RoomResponse;
 
 import java.math.BigDecimal;
@@ -44,6 +43,12 @@ public class RoomReportService {
 
     public List<RoomResponse> roomFilter(String name, LocalDate from, LocalDate to, Boolean bathroom, String type, Integer personCount, BigDecimal priceFrom, BigDecimal priceTo) {
         return roomDao.roomFilter(name, from, to, bathroom, type, personCount, priceFrom, priceTo).stream()
+                .map(o -> roomMapper.fromRoomToRoomResponse(o))
+                .collect(Collectors.toList());
+    }
+
+    public List<RoomResponse> roomAmenity() {
+        return roomDao.roomAmenity().stream()
                 .map(o -> roomMapper.fromRoomToRoomResponse(o))
                 .collect(Collectors.toList());
     }

@@ -22,8 +22,8 @@ public class EmployeeService {
         employeeDao.saveEmployee(employee);
     }
 
-    public void updateEmployee(EmployeeRequest employeeRequest) {
-        Employee employee = new Employee();
+    public void updateEmployee(Long id, EmployeeRequest employeeRequest) {
+        Employee employee = employeeDao.getEmployee(id);
         upsertEmployee(employee, employeeRequest);
 
         employeeDao.updateEmployee(employee);

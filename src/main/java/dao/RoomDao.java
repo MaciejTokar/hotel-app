@@ -115,4 +115,20 @@ public class RoomDao {
         }
         return list;
     }
+
+    public List<Room> roomAmenity() {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            String hql = "SELECT r FROM Room r " +
+                    "JOIN FETCH r.facilities f";
+
+            transaction.commit();
+            return session.createQuery(hql, Room.class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

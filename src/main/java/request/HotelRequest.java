@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class HotelRequest {
-//    @NotBlank
     private String name;
-//    @NotBlank
     private String address;
 }

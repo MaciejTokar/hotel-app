@@ -4,19 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import model.enums.EventType;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ReservationResponse {
+public class EventResponse {
     private Long id;
-    private LocalDate fromDate;
-    private LocalDate toDate;
-    private Long roomId;
-    private String number;
-    private Long clientId;
-    private String nameHotel;
+    private LocalDate date;
+    private Integer personCount;
+    private Long hotelId;
+    private Set<EventType> eventType;
 }

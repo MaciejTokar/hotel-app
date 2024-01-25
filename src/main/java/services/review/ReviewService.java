@@ -25,8 +25,8 @@ public class ReviewService {
         reviewDao.saveReview(review);
     }
 
-    public void updateReview(ReviewRequest reviewRequest) {
-        Review review = new Review();
+    public void updateReview(Long id, ReviewRequest reviewRequest) {
+        Review review = reviewDao.getReview(id);
         upsertReview(review, reviewRequest);
 
         reviewDao.updateReview(review);
