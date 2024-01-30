@@ -24,22 +24,18 @@ public class FacilityDao {
             e.printStackTrace();
         }
     }
-
-    public void addFacilityToRoom(Long roomId, Facility facility) {
-//        List<Long> roomId
+    public void addFacilityToRoom(List<Long> roomIds, Facility facility) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
 
         try {
             transaction = session.beginTransaction();
 
-            Room room = session.get(Room.class, roomId);
-//            Facility facility = session.get(Facility.class, facilityId);
-
-            room.getFacilities().add(facility);
-
-
-            facility.getRooms().add(room);
+            for (Long roomId : roomIds) {
+                Room room = session.get(Room.class, roomId);
+                room.getFacilities().add(facility);
+                facility.getRooms().add(room);
+            }
 
             transaction.commit();
         } catch (Exception e) {
