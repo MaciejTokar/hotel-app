@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -95,5 +96,31 @@ public class HotelDao {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<Hotel> roomWithSpecificAmenity(List<String> facilityNames) {
+        Transaction transaction = null;
+        List<Hotel> list = Collections.emptyList();
+
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            String hql = "SELECT h FROM Hotel h " +
+                    "JOIN FETCH h.rooms r " +
+                    "JOIN r.facilities f " +
+                    "WHERE f.name IN :facilityNames";
+
+             list = session.createQuery(hql, Hotel.class)
+                    .setParameter("facilityNames", facilityNames)
+                    .getResultList();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+            return list;
     }
 }

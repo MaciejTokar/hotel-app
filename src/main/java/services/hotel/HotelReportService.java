@@ -5,6 +5,7 @@ import mapping.HotelMapper;
 import response.HotelResponse;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HotelReportService {
 
@@ -28,5 +29,10 @@ public class HotelReportService {
                 .filter(n -> n.getAddress().equalsIgnoreCase(address))
                 .map(hotelMapper::fromHotelToHotelResponse)
                 .toList();
+    }
+    public List<HotelResponse> roomWithSpecificAmenity(List<String> facilityNames) {
+        return hotelDao.roomWithSpecificAmenity(facilityNames).stream()
+                .map(o -> hotelMapper.fromHotelToHotelResponse(o))
+                .collect(Collectors.toList());
     }
 }

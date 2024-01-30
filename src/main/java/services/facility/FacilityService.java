@@ -4,6 +4,7 @@ import dao.FacilityDao;
 import dao.RoomDao;
 import model.Facility;
 import model.Room;
+import org.hibernate.Hibernate;
 import request.FacilityRequest;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class FacilityService {
         upsertFacility(facility, facilityRequest);
 
         facilityDao.saveFacility(facility);
+//        ZROBIĆ STREAM DO WYCIĄGNIĘCIA IDKA
+//        facilityRequest.getRoomsId()
+        facilityDao.addFacilityToRoom(facilityRequest.getRoomsId().get(0), facility);
     }
 
     public void updateFacility(Long id, FacilityRequest facilityRequest) {
@@ -44,5 +48,32 @@ public class FacilityService {
         List<Room> rooms = facilityRequest.getRoomsId().stream()
                 .map(roomId -> roomDao.getRoom(roomId))
                 .collect(Collectors.toList());
+
+        facility.setRooms(rooms);
+
+        for (Room room : rooms) {
+            room.getFacilities().add(facility);
+        }
     }
+
+//    private void upsertFacility(Facility facility, FacilityRequest facilityRequest) {
+//        facility.setDescription(facilityRequest.getDescription());
+//        facility.setName(facilityRequest.getName());
+//
+//        List<Room> rooms = facilityRequest.getRoomsId().stream()
+//                .map(roomId -> {
+//                    Room room = roomDao.getRoom(roomId);
+//                    // Inicjalizacja identyfikatorów przed dodaniem do kolekcji
+//                    Hibernate.initialize(room);
+//                    return room;
+//                })
+//                .collect(Collectors.toList());
+//
+//        facility.setRooms(rooms);
+//
+//        // Dodaj Facility do Rooms
+//        for (Room room : rooms) {
+//            room.getFacilities().add(facility);
+//        }
+//    }
 }

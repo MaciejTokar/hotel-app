@@ -31,13 +31,14 @@ public class Room {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Reservation> reservations;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "room_amenity",
+            name = "room_facility",
             joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn(name = "amenity_id")
+            inverseJoinColumns = @JoinColumn(name = "facility_id")
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+//    @ManyToMany(mappedBy = "rooms")
     private List<Facility> facilities;
 }

@@ -1,9 +1,6 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,5 +18,13 @@ public class Facility {
     private String description;
     private String name;
     @ManyToMany(mappedBy = "facilities")
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "room_facility",
+//            joinColumns = @JoinColumn(name = "room_id"),
+//            inverseJoinColumns = @JoinColumn(name = "facility_id")
+//    )
+//    @ToString.Exclude
+//    @EqualsAndHashCode.Exclude
     private List<Room> rooms;
 }
