@@ -17,14 +17,6 @@ public class Facility {
     private Long id;
     private String description;
     private String name;
-    @ManyToMany(mappedBy = "facilities")
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "room_facility",
-//            joinColumns = @JoinColumn(name = "room_id"),
-//            inverseJoinColumns = @JoinColumn(name = "facility_id")
-//    )
-//    @ToString.Exclude
-//    @EqualsAndHashCode.Exclude
+    @ManyToMany(mappedBy = "facilities", fetch = FetchType.EAGER)
     private List<Room> rooms;
 }

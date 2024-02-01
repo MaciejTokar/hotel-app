@@ -39,6 +39,5 @@ public class Room {
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-//    @ManyToMany(mappedBy = "rooms")
     private List<Facility> facilities;
 }

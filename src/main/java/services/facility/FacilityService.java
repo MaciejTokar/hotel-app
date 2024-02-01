@@ -7,6 +7,7 @@ import model.Room;
 import request.FacilityRequest;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FacilityService {
@@ -35,7 +36,29 @@ public class FacilityService {
 
     public void deleteFacility(Long id) {
         Facility facility = facilityDao.getFacility(id);
+        deleteValidation(facility);
         facilityDao.deleteFacility(facility);
+    }
+
+    private void deleteValidation(Facility facility) {
+        Optional.ofNullable(facility.getRooms())
+                .ifPresent(o -> {
+                    throw new RuntimeException("Ma podpięte roomy");
+                });
+    }
+
+    public void deleteFacilityOfRoom(Long facilityId, Long roomId) {
+        Facility facility = facilityDao.getFacility(facilityId);
+
+        Optional<Room> roomToRemove = facility.getRooms().stream()
+                .filter(r -> r.getId().equals(roomId))
+                .findAny();
+
+        if (roomToRemove.isPresent()) {
+            facilityDao.deleteFacilityOfRoom(facilityId, roomId);
+        } else {
+            throw new RuntimeException("Pokój lub obiekt Facility nie zostały znalezione dla podanych identyfikatorów.");
+        }
     }
 
     private void upsertFacility(Facility facility, FacilityRequest facilityRequest) {

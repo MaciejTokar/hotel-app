@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class FacilityRequest {
-    private Long id;
     private String description;
     private String name;
     private List<Long> roomsId;

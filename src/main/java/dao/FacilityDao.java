@@ -76,6 +76,25 @@ public class FacilityDao {
         }
     }
 
+    public void deleteFacilityOfRoom(Long facilityId, Long roomId) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            session.createNativeQuery("DELETE FROM room_facility WHERE facility_id = :facilityId AND room_id = :roomId")
+                    .setParameter("facilityId", facilityId)
+                    .setParameter("roomId", roomId)
+                    .executeUpdate();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
     public Facility getFacility(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(Facility.class, id);
