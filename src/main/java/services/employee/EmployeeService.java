@@ -19,19 +19,19 @@ public class EmployeeService {
         Employee employee = new Employee();
         upsertEmployee(employee, employeeRequest);
 
-        employeeDao.saveEmployee(employee);
+        employeeDao.save(employee);
     }
 
     public void updateEmployee(Long id, EmployeeRequest employeeRequest) {
-        Employee employee = employeeDao.getEmployee(id);
+        Employee employee = employeeDao.getById(id);
         upsertEmployee(employee, employeeRequest);
 
-        employeeDao.updateEmployee(employee);
+        employeeDao.update(employee);
     }
 
     public void deleteEmployee(Long id) {
-        Employee employee = employeeDao.getEmployee(id);
-        employeeDao.deleteEmployee(employee);
+        Employee employee = employeeDao.getById(id);
+        employeeDao.delete(employee);
     }
 
     private void upsertEmployee(Employee employee, EmployeeRequest employeeRequest) {
@@ -40,6 +40,6 @@ public class EmployeeService {
         employee.setPhone(employeeRequest.getPhone());
         employee.setMail(employeeRequest.getMail());
         employee.setSalary(employeeRequest.getSalary());
-        employee.setHotel(hotelDao.getHotel(employeeRequest.getHotelId()));
+        employee.setHotel(hotelDao.getById(employeeRequest.getHotelId()));
     }
 }

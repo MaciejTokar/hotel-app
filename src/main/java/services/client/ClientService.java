@@ -16,19 +16,19 @@ public class ClientService {
         Client client = new Client();
         upsertRoom(client, clientRequest);
 
-        clientDao.saveClient(client);
+        clientDao.save(client);
     }
 
     public void updateClient(Long id, ClientRequest clientRequest) {
-        Client client = clientDao.getClient(id);
+        Client client = clientDao.getById(id);
         upsertRoom(client, clientRequest);
 
-        clientDao.updateClient(client);
+        clientDao.update(client);
     }
 
     public void deleteClient(Long clientId) {
-        Client client = clientDao.getClient(clientId);
-        clientDao.deleteClient(client);
+        Client client = clientDao.getById(clientId);
+        clientDao.delete(client);
     }
 
     private void upsertRoom(Client client, ClientRequest clientRequest) {

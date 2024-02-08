@@ -11,9 +11,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RoomReportService {
-
-    private RoomDao roomDao;
     private RoomMapper roomMapper;
+    private RoomDao roomDao;
     private HotelDao hotelDao;
 
     public RoomReportService(RoomDao roomDao, RoomMapper roomMapper) {

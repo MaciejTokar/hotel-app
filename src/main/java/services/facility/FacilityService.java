@@ -23,32 +23,34 @@ public class FacilityService {
         Facility facility = new Facility();
         upsertFacility(facility, facilityRequest);
 
-        facilityDao.saveFacility(facility);
-        facilityDao.addFacilityToRoom(facilityRequest.getRoomsId(), facility);
+        facilityDao.save(facility);
     }
 
     public void updateFacility(Long id, FacilityRequest facilityRequest) {
-        Facility facility = facilityDao.getFacility(id);
+        Facility facility = facilityDao.getById(id);
         upsertFacility(facility, facilityRequest);
 
-        facilityDao.updateFacility(facility);
+        facilityDao.update(facility);
     }
 
     public void deleteFacility(Long id) {
-        Facility facility = facilityDao.getFacility(id);
+        Facility facility = facilityDao.getById(id);
         deleteValidation(facility);
-        facilityDao.deleteFacility(facility);
+        facilityDao.delete(facility);
     }
 
     private void deleteValidation(Facility facility) {
-        Optional.ofNullable(facility.getRooms())
-                .ifPresent(o -> {
-                    throw new RuntimeException("Ma podpięte roomy");
+        Optional.ofNullable(facility)
+                .map(Facility::getRooms)
+                .ifPresent(rooms -> {
+                    if (!rooms.isEmpty()) {
+                        throw new RuntimeException("Ma podpięte roomy");
+                    }
                 });
     }
 
     public void deleteFacilityOfRoom(Long facilityId, Long roomId) {
-        Facility facility = facilityDao.getFacility(facilityId);
+        Facility facility = facilityDao.getById(facilityId);
 
         Optional<Room> roomToRemove = facility.getRooms().stream()
                 .filter(r -> r.getId().equals(roomId))
@@ -66,7 +68,7 @@ public class FacilityService {
         facility.setName(facilityRequest.getName());
 
         List<Room> rooms = facilityRequest.getRoomsId().stream()
-                .map(roomId -> roomDao.getRoom(roomId))
+                .map(roomId -> roomDao.getById(roomId))
                 .collect(Collectors.toList());
 
         facility.setRooms(rooms);

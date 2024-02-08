@@ -1,8 +1,6 @@
 package services.room;
 
-import dao.ClientDao;
-import dao.HotelDao;
-import dao.RoomDao;
+import dao.*;
 import model.Room;
 import request.RoomRequest;
 
@@ -10,30 +8,29 @@ import request.RoomRequest;
 public class RoomService {
     private RoomDao roomDao;
     private HotelDao hotelDao;
-    private ClientDao clientDao;
 
-    public RoomService(RoomDao roomDao, HotelDao hotelDao, ClientDao clientDao) {
+
+    public RoomService(RoomDao roomDao, HotelDao hotelDao) {
         this.roomDao = roomDao;
         this.hotelDao = hotelDao;
-        this.clientDao = clientDao;
     }
     public void saveRoom(RoomRequest roomRequest) {
         Room room = new Room();
         upsertRoom(room, roomRequest);
 
-        roomDao.saveRoom(room);
+        roomDao.save(room);
     }
 
     public void updateRoom(RoomRequest roomRequest, Long roomId) {
-        Room room = roomDao.getRoom(roomId);
+        Room room = roomDao.getById(roomId);
         upsertRoom(room, roomRequest);
 
-        roomDao.updateRoom(room);
+        roomDao.update(room);
     }
 
     public void deleteRoom(Long roomId) {
-        Room room = roomDao.getRoom(roomId);
-        roomDao.deleteRoom(room);
+        Room room = roomDao.getById(roomId);
+        roomDao.delete(room);
     }
 
     private void upsertRoom(Room room, RoomRequest roomRequest) {
@@ -42,6 +39,6 @@ public class RoomService {
         room.setPersonCount(roomRequest.getPersonCount());
         room.setPrice(roomRequest.getPrice());
         room.setBathroom(roomRequest.isBathroom());
-        room.setHotel(hotelDao.getHotel(roomRequest.getHotelId()));
+        room.setHotel(hotelDao.getById(roomRequest.getHotelId()));
     }
 }

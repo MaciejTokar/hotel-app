@@ -17,6 +17,6 @@ public class Facility {
     private Long id;
     private String description;
     private String name;
-    @ManyToMany(mappedBy = "facilities", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "facilities", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Room> rooms;
 }

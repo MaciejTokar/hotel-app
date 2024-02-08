@@ -36,7 +36,7 @@ public class ClientReportService {
     }
 
     public BigDecimal calculatePriceForReservation(Long clientId, Long hotelId, LocalDate from, LocalDate to) {
-        Client client = clientDao.getClient(clientId);
+        Client client = clientDao.getById(clientId);
 
         BigDecimal costRooms = client.getReservations().stream()
                 .filter(o -> o.getRoom().getHotel().getId().equals(hotelId))

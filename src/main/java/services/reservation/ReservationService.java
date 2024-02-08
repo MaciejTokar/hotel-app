@@ -26,34 +26,34 @@ public class ReservationService {
 
         reservation.setFromDate(reservationRequest.getFromDate());
         reservation.setToDate(reservationRequest.getToDate());
-        reservation.setClient(clientDao.getClient(reservationRequest.getClientId()));
+        reservation.setClient(clientDao.getById(reservationRequest.getClientId()));
 
         for (Long roomId : reservationRequest.getRoomsId()) {
-            Room room = roomDao.getRoom(roomId);
+            Room room = roomDao.getById(roomId);
             reservation.setRoom(room);
-            reservationDao.saveReservation(reservation);
+            reservationDao.save(reservation);
         }
     }
 
     public void updateReservation(Long id, ReservationUpdateRequest reservationUpdateRequest) {
-        Reservation reservation = reservationDao.getReservation(id);
+        Reservation reservation = reservationDao.getById(id);
 
         reservation.setFromDate(reservationUpdateRequest.getFromDate());
         reservation.setToDate(reservationUpdateRequest.getToDate());
-        reservation.setClient(clientDao.getClient(reservationUpdateRequest.getClientId()));
-        reservation.setRoom(roomDao.getRoom(reservationUpdateRequest.getRoomId()));
+        reservation.setClient(clientDao.getById(reservationUpdateRequest.getClientId()));
+        reservation.setRoom(roomDao.getById(reservationUpdateRequest.getRoomId()));
 
-        reservationDao.updateReservation(reservation);
+        reservationDao.update(reservation);
     }
 
     public void deleteReservation(Long reservationId) {
-        Reservation reservation = reservationDao.getReservation(reservationId);
-        reservationDao.deleteReservation(reservation);
+        Reservation reservation = reservationDao.getById(reservationId);
+        reservationDao.delete(reservation);
     }
 
     private void upsertReservation(Reservation reservation, ReservationRequest reservationRequest) {
         reservation.setFromDate(reservationRequest.getFromDate());
         reservation.setToDate(reservationRequest.getToDate());
-        reservation.setClient(clientDao.getClient(reservationRequest.getClientId()));
+        reservation.setClient(clientDao.getById(reservationRequest.getClientId()));
     }
 }

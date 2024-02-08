@@ -1,8 +1,6 @@
 package services.review;
 
-import dao.ClientDao;
-import dao.HotelDao;
-import dao.ReviewDao;
+import dao.*;
 import model.Review;
 import request.ReviewRequest;
 
@@ -22,26 +20,26 @@ public class ReviewService {
         Review review = new Review();
         upsertReview(review, reviewRequest);
 
-        reviewDao.saveReview(review);
+        reviewDao.save(review);
     }
 
     public void updateReview(Long id, ReviewRequest reviewRequest) {
-        Review review = reviewDao.getReview(id);
+        Review review = reviewDao.getById(id);
         upsertReview(review, reviewRequest);
 
-        reviewDao.updateReview(review);
+        reviewDao.update(review);
     }
 
     public void deleteReview(Long reviewId) {
-        Review review = reviewDao.getReview(reviewId);
-        reviewDao.deleteReview(review);
+        Review review = reviewDao.getById(reviewId);
+        reviewDao.delete(review);
     }
 
     private void upsertReview(Review review, ReviewRequest reviewRequest) {
         review.setOutcome(reviewRequest.getOutcome());
         review.setDescription(reviewRequest.getDescription());
         review.setDate(reviewRequest.getDate());
-        review.setHotel(hotelDao.getHotel(reviewRequest.getHotelId()));
-        review.setClient(clientDao.getClient(reviewRequest.getClientId()));
+        review.setHotel(hotelDao.getById(reviewRequest.getHotelId()));
+        review.setClient(clientDao.getById(reviewRequest.getClientId()));
     }
 }

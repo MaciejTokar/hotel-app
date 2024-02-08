@@ -15,18 +15,18 @@ public class HotelService {
         Hotel hotel = new Hotel();
         hotel.setName(hotelRequest.getName());
         hotel.setAddress(hotelRequest.getAddress());
-        hotelDao.saveHotel(hotel);
+        hotelDao.save(hotel);
     }
 
     public void updateHotel(Long id, HotelRequest hotelRequest) {
-        Hotel hotel = hotelDao.getHotel(id);
+        Hotel hotel = hotelDao.getById(id);
         hotel.setName(hotelRequest.getName());
         hotel.setAddress(hotelRequest.getAddress());
-        hotelDao.updateHotel(hotel);
+        hotelDao.update(hotel);
     }
 
     public void deleteHotel(Long hotelId) {
-        Hotel hotel = hotelDao.getHotel(hotelId);
-        hotelDao.deleteHotel(hotel);
+        Hotel hotel = hotelDao.getById(hotelId);
+        hotelDao.delete(hotel);
     }
 }
