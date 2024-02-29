@@ -1,6 +1,8 @@
 package dao;
 
 import config.HibernateUtil;
+import exeption.BaseException;
+import exeption.ErrorCode;
 import model.Facility;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -21,7 +23,7 @@ public class FacilityDao extends CommonDao<Facility> {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            throw new BaseException(ErrorCode.FACILITY_UPDATE_EXCEPTION, String.valueOf(facility.getId()));
         }
     }
 
@@ -40,7 +42,6 @@ public class FacilityDao extends CommonDao<Facility> {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
         }
     }
 }

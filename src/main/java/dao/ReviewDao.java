@@ -1,6 +1,10 @@
 package dao;
 
+import exeption.ErrorCode;
+import exeption.ReviewException;
 import model.Review;
+
+import java.util.Optional;
 
 public class ReviewDao extends CommonDao<Review> {
     public ReviewDao() {
@@ -8,14 +12,10 @@ public class ReviewDao extends CommonDao<Review> {
     }
 
     @Override
-    public void save(Review review) {
-        executeInTransaction(session -> session.save(review));
-        if (review.getClient().getId() == null) {
-            throw new NullPointerException();
-        }
-
-        if (review.getHotel().getId() == null) {
-            throw new NullPointerException();
-        }
+    public Review getById(Long id) {
+        return Optional.ofNullable(id)
+                .filter(_id -> _id != null)
+                .map(e -> executeInSession(session -> session.get(Review.class, id)))
+                .orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_ID_EXCEPTION, String.valueOf(id)));
     }
 }

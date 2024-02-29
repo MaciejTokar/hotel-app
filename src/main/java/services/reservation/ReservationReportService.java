@@ -25,9 +25,15 @@ public class ReservationReportService {
 
     public List<ReservationResponse> searchReservation(LocalDate from, LocalDate to) {
         return reservationDao.findAll().stream()
-                .filter(o -> o.getFromDate().isAfter(from) && o.getToDate().isBefore(to))
+                .filter(reservation -> isWithinRange(reservation.getFromDate(), from, to) &&
+                        isWithinRange(reservation.getToDate(), from, to))
                 .map(reservationMapper::fromReservationToReservationResponse)
                 .toList();
+    }
+
+    private boolean isWithinRange(LocalDate date, LocalDate from, LocalDate to) {
+        return (date.isEqual(from) || date.isAfter(from)) &&
+                (date.isEqual(to) || date.isBefore(to));
     }
 
     public List<ReservationResponse> sortedList() {

@@ -1,25 +1,20 @@
 package dao;
 
+import exeption.ErrorCode;
+import exeption.HotelException;
+import exeption.RoomException;
+import model.Hotel;
 import model.Room;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class RoomDao extends CommonDao<Room> {
 
     public RoomDao() {
         super(Room.class);
-    }
-
-    @Override
-    public void save(Room room) {
-        executeInTransaction(session -> {
-            session.save(room);
-            if (room.getHotel().getId() == null) {
-                throw new NullPointerException("Null");
-            }
-        });
     }
 
     public List<Room> roomFilter(String name, LocalDate from, LocalDate to, Boolean bathroom, String type, Integer personCount, BigDecimal priceFrom, BigDecimal priceTo) {
@@ -54,6 +49,14 @@ public class RoomDao extends CommonDao<Room> {
 
             return session.createQuery(hql, Room.class).list();
         });
+    }
+
+    @Override
+    public Room getById(Long id) {
+        return Optional.ofNullable(id)
+                .filter(_id -> _id != null)
+                .map(e -> executeInSession(session -> session.get(Room.class, id)))
+                .orElseThrow(() -> new RoomException(ErrorCode.ROOM_ID_EXCEPTION, String.valueOf(id)));
     }
 }
 

@@ -22,7 +22,7 @@ public class Event {
     private Long id;
     private LocalDate date;
     private Integer personCount;
-    @ElementCollection()
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "event_types",
             joinColumns = @JoinColumn(name = "event_id")

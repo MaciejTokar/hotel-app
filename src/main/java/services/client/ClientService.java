@@ -1,29 +1,37 @@
 package services.client;
 
 import dao.ClientDao;
+import mapping.ClientMapper;
 import model.Client;
 import request.ClientRequest;
+import response.ClientResponse;
 
 public class ClientService {
 
     private ClientDao clientDao;
+    private ClientMapper clientMapper;
 
-    public ClientService(ClientDao clientDao) {
+    public ClientService(ClientDao clientDao, ClientMapper clientMapper) {
         this.clientDao = clientDao;
+        this.clientMapper = clientMapper;
     }
 
-    public void saveClient(ClientRequest clientRequest) {
+    public ClientResponse saveClient(ClientRequest clientRequest) {
         Client client = new Client();
-        upsertRoom(client, clientRequest);
+        client = upsertClient(client, clientRequest);
 
         clientDao.save(client);
+
+        return clientMapper.fromClientToClientResponse(clientDao.getById(client.getId()));
     }
 
-    public void updateClient(Long id, ClientRequest clientRequest) {
+    public ClientResponse updateClient(Long id, ClientRequest clientRequest) {
         Client client = clientDao.getById(id);
-        upsertRoom(client, clientRequest);
+        client = upsertClient(client, clientRequest);
 
         clientDao.update(client);
+
+        return clientMapper.fromClientToClientResponse(clientDao.getById(client.getId()));
     }
 
     public void deleteClient(Long clientId) {
@@ -31,12 +39,15 @@ public class ClientService {
         clientDao.delete(client);
     }
 
-    private void upsertRoom(Client client, ClientRequest clientRequest) {
-        client.setName(clientRequest.getName());
-        client.setSurname(clientRequest.getSurname());
-        client.setPesel(clientRequest.getPesel());
-        client.setMail(clientRequest.getMail());
-        client.setPhone(clientRequest.getPhone());
-        client.setCardType(clientRequest.getCardType());
+    private Client upsertClient(Client client, ClientRequest clientRequest) {
+        return client.builder()
+                .id(client.getId())
+                .name(clientRequest.getName())
+                .surname(clientRequest.getSurname())
+                .pesel(clientRequest.getPesel())
+                .mail(clientRequest.getMail())
+                .phone(clientRequest.getPhone())
+                .cardType(clientRequest.getCardType())
+                .build();
     }
 }

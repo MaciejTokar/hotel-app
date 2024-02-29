@@ -1,31 +1,38 @@
 package services.room;
 
 import dao.*;
+import mapping.RoomMapper;
 import model.Room;
 import request.RoomRequest;
+import response.RoomResponse;
 
 
 public class RoomService {
     private RoomDao roomDao;
     private HotelDao hotelDao;
+    private RoomMapper roomMapper;
 
 
-    public RoomService(RoomDao roomDao, HotelDao hotelDao) {
+    public RoomService(RoomDao roomDao, HotelDao hotelDao, RoomMapper roomMapper) {
         this.roomDao = roomDao;
         this.hotelDao = hotelDao;
     }
-    public void saveRoom(RoomRequest roomRequest) {
+    public RoomResponse saveRoom(RoomRequest roomRequest) {
         Room room = new Room();
-        upsertRoom(room, roomRequest);
+        room = upsertRoom(room, roomRequest);
 
         roomDao.save(room);
+
+        return roomMapper.fromRoomToRoomResponse(roomDao.getById(room.getId()));
     }
 
-    public void updateRoom(RoomRequest roomRequest, Long roomId) {
+    public RoomResponse updateRoom(Long roomId, RoomRequest roomRequest) {
         Room room = roomDao.getById(roomId);
-        upsertRoom(room, roomRequest);
+        room = upsertRoom(room, roomRequest);
 
         roomDao.update(room);
+
+        return roomMapper.fromRoomToRoomResponse(roomDao.getById(room.getId()));
     }
 
     public void deleteRoom(Long roomId) {
@@ -33,12 +40,15 @@ public class RoomService {
         roomDao.delete(room);
     }
 
-    private void upsertRoom(Room room, RoomRequest roomRequest) {
-        room.setType(roomRequest.getType());
-        room.setNumber(roomRequest.getNumber());
-        room.setPersonCount(roomRequest.getPersonCount());
-        room.setPrice(roomRequest.getPrice());
-        room.setBathroom(roomRequest.isBathroom());
-        room.setHotel(hotelDao.getById(roomRequest.getHotelId()));
+    private Room upsertRoom(Room room, RoomRequest roomRequest) {
+        return room.builder()
+                .id(room.getId())
+                .type(roomRequest.getType())
+                .number(roomRequest.getNumber())
+                .personCount(roomRequest.getPersonCount())
+                .price(roomRequest.getPrice())
+                .bathroom(roomRequest.getBathroom())
+                .hotel(hotelDao.getById(roomRequest.getHotelId()))
+                .build();
     }
 }

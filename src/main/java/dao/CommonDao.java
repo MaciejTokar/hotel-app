@@ -1,7 +1,7 @@
 package dao;
 
 import config.HibernateUtil;
-import exeption.HotelException;
+import exeption.GeneralException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -23,7 +23,6 @@ public class CommonDao<T> {
     public void update(T entity) {
         executeInTransaction(session -> session.update(entity));
     }
-
 
     public void delete(T entity) {
         executeInTransaction(session -> session.delete(entity));
@@ -47,7 +46,7 @@ public class CommonDao<T> {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new HotelException(HotelException.Code.DUPLICATE_EXCEPTION);
+            throw new GeneralException(GeneralException.Code.TRANSACTION_EXCEPTION);
         }
     }
 
@@ -55,7 +54,7 @@ public class CommonDao<T> {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return operation.apply(session);
         } catch (Exception e) {
-            throw new RuntimeException("Błąd operacji na bazie danych", e);
+            throw new GeneralException(GeneralException.Code.SESSION_EXCEPTION);
         }
     }
 }

@@ -16,22 +16,21 @@ public class ClientReportService {
     private ClientMapper clientMapper;
 
     public ClientReportService(ClientDao clientDao, ClientMapper clientMapper) {
-
         this.clientDao = clientDao;
         this.clientMapper = clientMapper;
     }
 
     public List<ClientResponse> searchClientByName(String name) {
         return clientDao.findAll().stream()
-                .filter(n -> n.getName().equals(name))
+                .filter(client -> Objects.nonNull(client.getName()) && client.getName().equals(name))
                 .map(clientMapper::fromClientToClientResponse)
                 .toList();
     }
-
     public List<ClientResponse> sortedList() {
         return clientDao.findAll().stream()
                 .map(clientMapper::fromClientToClientResponse)
-                .sorted(Comparator.comparing(ClientResponse::getName).thenComparing(ClientResponse::getSurname))
+                .sorted(Comparator.comparing(ClientResponse::getName, Comparator.nullsLast(String::compareTo))
+                        .thenComparing(ClientResponse::getSurname, Comparator.nullsLast(String::compareTo)))
                 .toList();
     }
 
@@ -44,7 +43,6 @@ public class ClientReportService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         long days = ChronoUnit.DAYS.between(from, to);
-
 
         BigDecimal price = costRooms.multiply(BigDecimal.valueOf(days));
 

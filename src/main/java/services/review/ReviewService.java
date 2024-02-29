@@ -1,33 +1,41 @@
 package services.review;
 
 import dao.*;
+import mapping.ReviewMapper;
 import model.Review;
 import request.ReviewRequest;
+import response.ReviewResponse;
 
 public class ReviewService {
 
     private ReviewDao reviewDao;
     private ClientDao clientDao;
     private HotelDao hotelDao;
+    private ReviewMapper reviewMapper;
 
-    public ReviewService(ReviewDao reviewDao, ClientDao clientDao, HotelDao hotelDao) {
+    public ReviewService(ReviewDao reviewDao, ClientDao clientDao, HotelDao hotelDao, ReviewMapper reviewMapper) {
         this.reviewDao = reviewDao;
         this.clientDao = clientDao;
         this.hotelDao = hotelDao;
+        this.reviewMapper = reviewMapper;
     }
 
-    public void saveReview(ReviewRequest reviewRequest) {
+    public ReviewResponse saveReview(ReviewRequest reviewRequest) {
         Review review = new Review();
-        upsertReview(review, reviewRequest);
+        review = upsertReview(review, reviewRequest);
 
         reviewDao.save(review);
+
+        return reviewMapper.fromReviewToReviewResponse(reviewDao.getById(review.getId()));
     }
 
-    public void updateReview(Long id, ReviewRequest reviewRequest) {
+    public ReviewResponse updateReview(Long id, ReviewRequest reviewRequest) {
         Review review = reviewDao.getById(id);
-        upsertReview(review, reviewRequest);
+        review = upsertReview(review, reviewRequest);
 
         reviewDao.update(review);
+
+        return reviewMapper.fromReviewToReviewResponse(reviewDao.getById(review.getId()));
     }
 
     public void deleteReview(Long reviewId) {
@@ -35,11 +43,14 @@ public class ReviewService {
         reviewDao.delete(review);
     }
 
-    private void upsertReview(Review review, ReviewRequest reviewRequest) {
-        review.setOutcome(reviewRequest.getOutcome());
-        review.setDescription(reviewRequest.getDescription());
-        review.setDate(reviewRequest.getDate());
-        review.setHotel(hotelDao.getById(reviewRequest.getHotelId()));
-        review.setClient(clientDao.getById(reviewRequest.getClientId()));
+    private Review upsertReview(Review review, ReviewRequest reviewRequest) {
+        return review.builder()
+                .id(review.getId())
+                .outcome(reviewRequest.getOutcome())
+                .description(reviewRequest.getDescription())
+                .date(reviewRequest.getDate())
+                .hotel(hotelDao.getById(reviewRequest.getHotelId()))
+                .client(clientDao.getById(reviewRequest.getClientId()))
+                .build();
     }
 }

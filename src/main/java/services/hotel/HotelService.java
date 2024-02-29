@@ -1,32 +1,48 @@
 package services.hotel;
 
 import dao.HotelDao;
+import mapping.HotelMapper;
 import model.Hotel;
 import request.HotelRequest;
+import response.HotelResponse;
 
 public class HotelService {
     private HotelDao hotelDao;
+    private HotelMapper hotelMapper;
 
-    public HotelService(HotelDao hotelDao) {
+    public HotelService(HotelDao hotelDao, HotelMapper hotelMapper) {
         this.hotelDao = hotelDao;
+        this.hotelMapper = hotelMapper;
     }
 
-    public void saveHotel(HotelRequest hotelRequest) {
+    public HotelResponse saveHotel(HotelRequest hotelRequest) {
         Hotel hotel = new Hotel();
-        hotel.setName(hotelRequest.getName());
-        hotel.setAddress(hotelRequest.getAddress());
+        hotel = upsertHotel(hotel, hotelRequest);
+
         hotelDao.save(hotel);
+
+        return hotelMapper.fromHotelToHotelResponse(hotelDao.getById(hotel.getId()));
     }
 
-    public void updateHotel(Long id, HotelRequest hotelRequest) {
+    public HotelResponse updateHotel(Long id, HotelRequest hotelRequest) {
         Hotel hotel = hotelDao.getById(id);
-        hotel.setName(hotelRequest.getName());
-        hotel.setAddress(hotelRequest.getAddress());
+        hotel = upsertHotel(hotel, hotelRequest);
+
         hotelDao.update(hotel);
+
+        return hotelMapper.fromHotelToHotelResponse(hotelDao.getById(hotel.getId()));
     }
 
     public void deleteHotel(Long hotelId) {
         Hotel hotel = hotelDao.getById(hotelId);
         hotelDao.delete(hotel);
+    }
+
+    public Hotel upsertHotel(Hotel hotel, HotelRequest hotelRequest) {
+        return hotel.builder()
+                .id(hotel.getId())
+                .name(hotelRequest.getName())
+                .address(hotelRequest.getAddress())
+                .build();
     }
 }

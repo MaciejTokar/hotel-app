@@ -3,11 +3,14 @@ package services.room;
 import dao.HotelDao;
 import dao.RoomDao;
 import mapping.RoomMapper;
+import model.Facility;
+import model.Room;
 import response.RoomResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RoomReportService {
@@ -46,9 +49,8 @@ public class RoomReportService {
                 .collect(Collectors.toList());
     }
 
-    public List<RoomResponse> roomAmenity() {
+    public Map<Long, List<Long>> roomAmenity() {
         return roomDao.roomAmenity().stream()
-                .map(o -> roomMapper.fromRoomToRoomResponse(o))
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(Room::getId, r -> r.getFacilities().stream().map(Facility::getId).collect(Collectors.toList()), (existing, replacement) -> replacement));
     }
 }

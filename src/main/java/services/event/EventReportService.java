@@ -26,11 +26,8 @@ public class EventReportService {
                 .collect(Collectors.toList());
     }
 
-
     public Map<String, Long> sumEvent() {
         return eventDao.findAll().stream()
                 .collect(Collectors.groupingBy(o -> o.getHotel().getName(), Collectors.counting()));
     }
-
-
 }

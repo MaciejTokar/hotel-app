@@ -1,7 +1,5 @@
 package model;
 
-
-
 import lombok.*;
 
 import javax.persistence.*;
