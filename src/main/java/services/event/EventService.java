@@ -13,7 +13,6 @@ public class EventService {
     private HotelDao hotelDao;
     private EventMapper eventMapper;
 
-
     public EventService(EventDao eventDao, HotelDao hotelDao, EventMapper eventMapper) {
         this.eventDao = eventDao;
         this.hotelDao = hotelDao;

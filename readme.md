@@ -14,13 +14,14 @@ management of customer and staff data, and tracking room availability in the hot
 
 ## Running instructions
 
-1. Configure the 'hibernate.cfg.xml' file according to your database settings.
+1. Configure the 'hibernate.cfg.xml' file according to your database settings, base on 'hibernate.cfg.xml.example' 
 2. Run 'data.sql' to add data to your database.
 3. Run the application through the main class(Main.java).
 
 ## Project Structure
 
-src/main/resources: Contains configuration file 'hibernate.cfg.xml'
+src/main/resources: Contains configuration file 'hibernate.cfg.xml.example'
+src/main/resources: Create your own file 'hibernate.cfg.xml' base on 'hibernate.cfg.xml.example'
 
 ## Examples Functionality
 

@@ -4,14 +4,12 @@ import dao.FacilityDao;
 import dao.RoomDao;
 import exeption.BaseException;
 import exeption.ErrorCode;
-import exeption.RelationException;
 import mapping.FacilityMapper;
 import model.Facility;
 import model.Room;
 import request.FacilityRequest;
 import response.FacilityResponse;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -69,7 +67,7 @@ public class FacilityService {
         facility.getRooms().stream()
                 .filter(room -> Objects.equals(room.getId(), roomId))
                 .findAny()
-                .orElseThrow(() -> new RelationException(ErrorCode.FACILITY_ROOM_EXISTENCE, String.valueOf(facilityId), String.valueOf(roomId)));
+                .orElseThrow(() -> new BaseException(ErrorCode.FACILITY_ROOM_EXISTENCE, String.valueOf(facilityId), String.valueOf(roomId)));
 
         facilityDao.deleteFacilityOfRoom(facilityId, roomId);
     }

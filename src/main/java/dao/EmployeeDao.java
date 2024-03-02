@@ -2,9 +2,7 @@ package dao;
 
 import exeption.EmployeeException;
 import exeption.ErrorCode;
-import exeption.HotelException;
 import model.Employee;
-import model.Hotel;
 
 import java.util.Optional;
 

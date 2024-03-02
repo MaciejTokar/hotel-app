@@ -6,7 +6,6 @@ import model.Room;
 import request.RoomRequest;
 import response.RoomResponse;
 
-
 public class RoomService {
     private RoomDao roomDao;
     private HotelDao hotelDao;

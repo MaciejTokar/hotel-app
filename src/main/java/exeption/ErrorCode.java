@@ -8,10 +8,9 @@ public enum ErrorCode {
     REVIEW_ID_EXCEPTION("Review with provided id not exist"),
     ROOM_ID_EXCEPTION("Room with provided id not exist"),
     FACILITY_UPDATE_EXCEPTION("Facility has not been updated"),
-    FACILITY_ROOM_SEPARATION("Invalid separation of room and facility"),
     FACILITY_ROOM_EXISTENCE("Facility contains room"),
-    FACILITY_ROOM_COMBINATION("Given ids of room and facility was not found"),
     FACILITY_ID_EXCEPTION("Facility with provided id not exist"),
+    FACILITY_NOT_EXIST("Facility not exist"),
     EMPLOYEE_ID_EXCEPTION("Employee with provided id not exist");
 
     private final String message;

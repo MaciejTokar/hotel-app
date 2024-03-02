@@ -17,7 +17,7 @@ public class Hotel {
     private Long id;
     private String name;
     private String address;
-    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Room> rooms;
